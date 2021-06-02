@@ -12,14 +12,15 @@ function TodoList({ list, onDeleteItem, onCheck, sort = false }) {
   return (
     <List>
       {list.map((item, i) => (
-        <ListItem key={item.id}>
+        <ListItem
+          key={item.id}
+          button
+          onClick={() => {
+            onCheck(i, !item.checked);
+          }}
+        >
           <ListItemIcon>
-            <Checkbox
-              checked={item.checked}
-              onChange={(e) => {
-                onCheck(i, e.target.checked);
-              }}
-            />
+            <Checkbox checked={item.checked} disableRipple />
           </ListItemIcon>
 
           <ListItemText>{item.text}</ListItemText>
