@@ -17,7 +17,7 @@ function TodoForm({ onSave }) {
         label="Add todo"
         margin="normal"
         variant="filled"
-        fullWidth={true}
+        fullWidth
         value={value}
         onChange={(e) => {
           setValue(e.target.value);

@@ -1,27 +1,22 @@
-import { useState } from "react";
+import TodoState from "./state/todo";
 
 import Header from "./components/Header";
 import TodoForm from "./components/TodoForm";
+import TodoList from "./components/TodoList";
 
 import "./App.css";
 
+const LS_TODO_KEY = "todo-list";
+
+let initialTodoState = []
+if (window.localStorage !== undefined) {
+  initialTodoState = JSON.parse(localStorage.getItem(LS_TODO_KEY) || "[]");
+}
+
 function App() {
-  const [list, setList] = useState([]);
-
-  const [listDone, setListDone] = useState([]);
-
-  const moveToDone = (i) => {
-    const newList = [...list];
-
-    const moveItem = newList[i];
-
-    if (!moveItem) return;
-
-    newList.splice(i, 1);
-    setList(newList);
-
-    setListDone([...listDone, moveItem]);
-  };
+  const todo = TodoState(initialTodoState, (list) => {
+    localStorage.setItem(LS_TODO_KEY, JSON.stringify(list))
+  });
 
   return (
     <div className="App">
@@ -29,31 +24,13 @@ function App() {
 
       <main>
         <div className="container">
-          <TodoForm
-            onSave={(v) => {
-              setList([...list, v]);
-            }}
+          <TodoForm onSave={todo.add} />
+
+          <TodoList
+            list={todo.list}
+            onDeleteItem={todo.delete}
+            onCheck={todo.setChecked}
           />
-
-          <h4>TODO:</h4>
-          <ol>
-            {list.map((text, i) => (
-              <li
-                onClick={() => {
-                  moveToDone(i);
-                }}
-              >
-                {text}
-              </li>
-            ))}
-          </ol>
-
-          <h4>Done:</h4>
-          <ol>
-            {listDone.map((text) => (
-              <li style={{ textDecoration: "line-through" }}>{text}</li>
-            ))}
-          </ol>
         </div>
       </main>
     </div>
