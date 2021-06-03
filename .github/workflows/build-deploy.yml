@@ -28,7 +28,7 @@ jobs:
       - name: Build bundle
         run: npm run build
         env:
-          BUILD_PATH: /react-todo-list
+          PUBLIC_URL: /react-todo-list
 
       - name: Upload production bundle
         uses: actions/upload-artifact@v2
