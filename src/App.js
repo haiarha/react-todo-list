@@ -1,22 +1,26 @@
-import TodoState from "./state/todo";
-
 import Header from "./components/Header";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
 import "./App.css";
+import useTodoState from "./hooks/useTodoState";
+import { useEffect } from "react";
 
 const LS_TODO_KEY = "todo-list";
 
-let initialTodoState = []
+let initialTodoState = [];
 if (window.localStorage !== undefined) {
   initialTodoState = JSON.parse(localStorage.getItem(LS_TODO_KEY) || "[]");
 }
 
 function App() {
-  const todo = TodoState(initialTodoState, (list) => {
-    localStorage.setItem(LS_TODO_KEY, JSON.stringify(list))
-  });
+  const [list, add, remove, setChecked] = useTodoState(initialTodoState);
+
+  useEffect(() => {
+    if (list !== initialTodoState) {
+      localStorage.setItem(LS_TODO_KEY, JSON.stringify(list));
+    }
+  }, [list]);
 
   return (
     <div className="App">
@@ -24,13 +28,9 @@ function App() {
 
       <main>
         <div className="container">
-          <TodoForm onSave={todo.add} />
+          <TodoForm onSave={add} />
 
-          <TodoList
-            list={todo.list}
-            onDeleteItem={todo.delete}
-            onCheck={todo.setChecked}
-          />
+          <TodoList list={list} onDeleteItem={remove} onCheck={setChecked} />
         </div>
       </main>
     </div>
