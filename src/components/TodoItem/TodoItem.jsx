@@ -14,10 +14,12 @@ function TodoItem(props) {
     checked,
     onClick,
     onDelete,
+
+    ...rest
   } = props;
 
   return (
-    <ListItem className="TodoItem" button onClick={onClick}>
+    <ListItem {...rest} className="TodoItem" button onClick={onClick}>
       <ListItemIcon>
         <Checkbox checked={checked} disableRipple />
       </ListItemIcon>
