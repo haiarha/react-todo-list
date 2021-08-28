@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -7,19 +9,27 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import Context from "./context";
+
 function TodoItem(props) {
   const {
     children,
 
+    index,
     checked,
-    onClick,
-    onDelete,
 
     ...rest
   } = props;
 
+  const { remove, setChecked } = useContext(Context);
+
   return (
-    <ListItem {...rest} className="TodoItem" button onClick={onClick}>
+    <ListItem
+      {...rest}
+      className="TodoItem"
+      button
+      onClick={() => setChecked(index, !checked)}
+    >
       <ListItemIcon>
         <Checkbox checked={checked} disableRipple />
       </ListItemIcon>
@@ -27,7 +37,7 @@ function TodoItem(props) {
       <ListItemText>{children}</ListItemText>
 
       <ListItemSecondaryAction>
-        <IconButton onClick={onDelete}>
+        <IconButton onClick={() => remove(index)}>
           <DeleteIcon />
         </IconButton>
       </ListItemSecondaryAction>

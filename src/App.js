@@ -1,10 +1,12 @@
+import { useEffect } from "react";
+import useTodoState from "./hooks/useTodoState";
+
 import Header from "./components/Header";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
+import TodoItemContext from "./components/TodoItem/context";
 
 import "./App.css";
-import useTodoState from "./hooks/useTodoState";
-import { useEffect } from "react";
 
 const LS_TODO_KEY = "todo-list";
 
@@ -30,7 +32,9 @@ function App() {
         <div className="container">
           <TodoForm onSave={add} />
 
-          <TodoList list={list} onDeleteItem={remove} onCheck={setChecked} />
+          <TodoItemContext.Provider value={{ remove, setChecked }}>
+            <TodoList list={list} />
+          </TodoItemContext.Provider>
         </div>
       </main>
     </div>
