@@ -8,6 +8,7 @@ import TodoItemContext from "./components/TodoItem/context";
 
 import "./App.css";
 
+
 const LS_TODO_KEY = "todo-list";
 
 let initialTodoState = [];
